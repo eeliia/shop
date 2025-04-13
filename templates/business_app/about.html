@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ business.name|default:"کسب و کار محلی" }} - درباره ما{% endblock %}
+
+{% block meta_description %}درباره {{ business.name|default:"کسب و کار محلی" }} - {{ business.meta_description }}{% endblock %}
+{% block meta_keywords %}درباره ما, {{ business.meta_keywords }}{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="bg-light py-5 mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="fw-bold">درباره ما</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">خانه</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">درباره ما</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-4">{{ business.name|default:"کسب و کار محلی" }}</h2>
+                    <p class="lead mb-4">{{ business.slogan|default:"ارائه بهترین خدمات با کیفیت عالی" }}</p>
+                    <p>{{ business.description|default:"توضیحات کسب و کار در اینجا قرار می‌گیرد." }}</p>
+                    
+                    {% if business.established_date %}
+                        <p><strong>تاریخ تاسیس:</strong> {{ business.established_date }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-6">
+                    <img src="/static/img/about-main.jpg" alt="درباره ما" class="img-fluid rounded shadow">
+                </div>
+            </div>
+
+            <!-- Our Values -->
+            <div class="row mt-5 pt-5">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">ارزش‌های ما</h2>
+                    <p class="lead">اصول و ارزش‌هایی که ما به آن‌ها پایبند هستیم</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="service-icon mb-3">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">کیفیت برتر</h4>
+                            <p>ما همواره به دنبال ارائه بهترین کیفیت در خدمات خود هستیم و رضایت مشتریان اولویت اصلی ماست.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="service-icon mb-3">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">صداقت و اعتماد</h4>
+                            <p>صداقت در کار و ایجاد اعتماد متقابل با مشتریان از اصول اساسی کسب و کار ما است.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="service-icon mb-3">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">مشتری مداری</h4>
+                            <p>مشتریان ما مهمترین سرمایه ما هستند و تمام تلاش ما برای جلب رضایت و ارائه خدمات مناسب به آنهاست.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div class="row mt-5 pt-5">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">تیم ما</h2>
+                    <p class="lead">با کارشناسان متخصص و با تجربه ما آشنا شوید</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <img src="/static/img/team-1.jpg" class="card-img-top" alt="عضو تیم">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">علی محمدی</h5>
+                            <p class="text-muted">مدیر عامل</p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="text-dark me-2"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="text-dark me-2"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <img src="/static/img/team-2.jpg" class="card-img-top" alt="عضو تیم">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">سارا احمدی</h5>
+                            <p class="text-muted">مدیر بازاریابی</p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="text-dark me-2"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="text-dark me-2"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <img src="/static/img/team-3.jpg" class="card-img-top" alt="عضو تیم">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">محمد رضایی</h5>
+                            <p class="text-muted">کارشناس فنی</p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="text-dark me-2"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="text-dark me-2"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <img src="/static/img/team-4.jpg" class="card-img-top" alt="عضو تیم">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">مریم حسینی</h5>
+                            <p class="text-muted">مدیر خدمات مشتریان</p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="text-dark me-2"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="text-dark me-2"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="row mt-5 pt-5">
+                <div class="col-12">
+                    <div class="bg-primary text-white p-5 rounded">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 mb-4 mb-lg-0">
+                                <h3 class="fw-bold">آماده همکاری با شما هستیم</h3>
+                                <p class="lead mb-0">برای دریافت مشاوره رایگان و یا رزرو نوبت با ما تماس بگیرید</p>
+                            </div>
+                            <div class="col-lg-4 text-lg-end">
+                                <a href="{% url 'contact' %}" class="btn btn-light btn-lg">تماس با ما</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

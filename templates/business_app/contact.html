@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}تماس با ما - {{ business.name|default:"کسب و کار محلی" }}{% endblock %}
+
+{% block meta_description %}{{ business.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ business.meta_keywords }}{% endblock %}
+
+{% load static %}
+{% block content %}
+    <!-- Page Header -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="fw-bold md-text-headline1">تماس با ما</h1>
+                    <p class="lead md-text-subtitle1">ما منتظر شنیدن از شما هستیم</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <div class="md-card md-elevation-2 p-4 h-100">
+                        <h3 class="fw-bold mb-4 md-text-headline3">اطلاعات تماس</h3>
+                        
+                        {% if business %}
+                            <div class="mb-4">
+                                <h5 class="md-text-headline5">آدرس</h5>
+                                <p class="md-text-body1">{{ business.address|linebreaks }}</p>
+                            </div>
+                            
+                            {% if business.phone %}
+                                <div class="mb-4">
+                                    <h5 class="md-text-headline5">تلفن</h5>
+                                    <p class="md-text-body1">{{ business.phone }}</p>
+                                </div>
+                            {% endif %}
+                            
+                            {% if business.email %}
+                                <div class="mb-4">
+                                    <h5 class="md-text-headline5">ایمیل</h5>
+                                    <p class="md-text-body1">{{ business.email }}</p>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="mb-4">
+                                <h5 class="md-text-headline5">ساعات کاری</h5>
+                                <ul class="list-unstyled md-text-body1">
+                                    {% for hour in business.hours.all %}
+                                        <li>{{ hour }}</li>
+                                    {% empty %}
+                                        <li>اطلاعات ساعات کاری موجود نیست</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            
+                            {% if business.facebook or business.instagram or business.twitter or business.linkedin %}
+                                <div>
+                                    <h5 class="md-text-headline5">شبکه‌های اجتماعی</h5>
+                                    <div class="social-links">
+                                        {% if business.facebook %}
+                                            <a href="{{ business.facebook }}" target="_blank" class="md-btn-icon">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if business.instagram %}
+                                            <a href="{{ business.instagram }}" target="_blank" class="md-btn-icon">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if business.twitter %}
+                                            <a href="{{ business.twitter }}" target="_blank" class="md-btn-icon">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if business.linkedin %}
+                                            <a href="{{ business.linkedin }}" target="_blank" class="md-btn-icon">
+                                                <i class="fab fa-linkedin-in"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <p>اطلاعات تماس موجود نیست</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-lg-7">
+                    <div class="md-card md-elevation-2 p-4">
+                        <h3 class="fw-bold mb-4 md-text-headline3">ارسال پیام</h3>
+                        
+                        <form method="post" class="md-form">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="id_name" name="name" placeholder="نام" required>
+                                        <label for="id_name">نام</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="id_email" name="email" placeholder="ایمیل" required>
+                                        <label for="id_email">ایمیل</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="id_subject" name="subject" placeholder="موضوع" required>
+                                    <label for="id_subject">موضوع</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="id_message" name="message" placeholder="پیام" style="height: 150px" required></textarea>
+                                    <label for="id_message">پیام</label>
+                                </div>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="submit" class="md-btn md-btn-primary md-btn-large">ارسال پیام</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="md-card md-elevation-2 p-0">
+                        <!-- Placeholder for map - in a real project, you would integrate Google Maps or similar -->
+                        <div class="bg-light text-center py-5">
+                            <p class="mb-0">نقشه موقعیت کسب و کار در اینجا نمایش داده می‌شود</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_css %}{% endblock %}
+
+{% block extra_js %}{% endblock %}

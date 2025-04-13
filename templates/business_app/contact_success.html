@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}پیام شما با موفقیت ارسال شد - {{ business.name|default:"کسب و کار محلی" }}{% endblock %}
+
+{% block meta_description %}{{ business.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ business.meta_keywords }}{% endblock %}
+
+{% load static %}
+{% block content %}
+    <!-- Success Message Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="md-card md-elevation-2 p-5">
+                        <div class="mb-4">
+                            <i class="material-icons md-text-success" style="font-size: 5rem;">check_circle</i>
+                        </div>
+                        <h1 class="fw-bold mb-4 md-text-headline2">پیام شما با موفقیت ارسال شد</h1>
+                        <p class="lead mb-4 md-text-body1">از اینکه با ما در ارتباط هستید متشکریم. پیام شما با موفقیت دریافت شد و در اسرع وقت به آن پاسخ خواهیم داد.</p>
+                        
+                        {% if message %}
+                            <div class="md-card md-elevation-1 p-4 mb-4">
+                                <h3 class="fw-bold mb-3 md-text-headline4">اطلاعات پیام</h3>
+                                <div class="row text-start">
+                                    <div class="col-md-6 mb-2">
+                                        <p class="mb-1"><strong>نام:</strong> {{ message.name }}</p>
+                                        <p class="mb-1"><strong>ایمیل:</strong> {{ message.email }}</p>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <p class="mb-1"><strong>موضوع:</strong> {{ message.subject }}</p>
+                                        <p class="mb-1"><strong>تاریخ:</strong> {{ message.created_at|date:"Y/m/d" }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            <a href="{% url 'home' %}" class="md-btn md-btn-primary md-btn-large mx-2">بازگشت به صفحه اصلی</a>
+                            <a href="{% url 'contact' %}" class="md-btn md-btn-outline-primary md-btn-large mx-2">ارسال پیام جدید</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Additional Information -->
+    <section class="py-5 md-section md-surface-variant">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold md-text-headline3">راه‌های ارتباطی دیگر</h2>
+                    </div>
+                    
+                    <div class="row">
+                        {% if business %}
+                            {% if business.phone %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="md-card md-elevation-1 p-4 h-100 text-center">
+                                        <div class="mb-3">
+                                            <i class="material-icons" style="font-size: 2.5rem;">phone</i>
+                                        </div>
+                                        <h4 class="fw-bold mb-3 md-text-headline5">تماس تلفنی</h4>
+                                        <p>{{ business.phone }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            {% if business.email %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="md-card md-elevation-1 p-4 h-100 text-center">
+                                        <div class="mb-3">
+                                            <i class="material-icons" style="font-size: 2.5rem;">email</i>
+                                        </div>
+                                        <h4 class="fw-bold mb-3 md-text-headline5">ایمیل</h4>
+                                        <p>{{ business.email }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            {% if business.address %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="md-card md-elevation-1 p-4 h-100 text-center">
+                                        <div class="mb-3">
+                                            <i class="material-icons" style="font-size: 2.5rem;">location_on</i>
+                                        </div>
+                                        <h4 class="fw-bold mb-3 md-text-headline5">آدرس</h4>
+                                        <p>{{ business.address }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="col-12 text-center">
+                                <p>اطلاعات تماس موجود نیست</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_css %}{% endblock %}
+
+{% block extra_js %}{% endblock %}

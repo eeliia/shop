@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block title %}رزرو نوبت - {{ business.name|default:"کسب و کار محلی" }}{% endblock %}
+
+{% block meta_description %}{{ business.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ business.meta_keywords }}{% endblock %}
+
+{% load static %}
+{% block content %}
+    <!-- Page Header -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="fw-bold md-text-headline1">رزرو نوبت</h1>
+                    <p class="lead md-text-subtitle1">برای دریافت خدمات ما نوبت رزرو کنید</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Form Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="md-card md-elevation-2 p-4">
+                        <h3 class="fw-bold mb-4 md-text-headline3">فرم رزرو نوبت</h3>
+                        
+                        <form method="post" class="md-form">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="id_name" name="name" placeholder="نام" required>
+                                        <label for="id_name">نام و نام خانوادگی</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="id_phone" name="phone" placeholder="تلفن" required>
+                                        <label for="id_phone">شماره تماس</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="id_email" name="email" placeholder="ایمیل">
+                                        <label for="id_email">ایمیل (اختیاری)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="id_service" name="service" required>
+                                            <option value="" selected disabled>انتخاب کنید</option>
+                                            {% for service in services %}
+                                                <option value="{{ service.id }}">{{ service.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <label for="id_service">خدمت مورد نظر</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" id="id_date" name="date" required>
+                                        <label for="id_date">تاریخ</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="time" class="form-control" id="id_time" name="time" required>
+                                        <label for="id_time">ساعت</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="id_notes" name="notes" placeholder="توضیحات" style="height: 100px"></textarea>
+                                    <label for="id_notes">توضیحات (اختیاری)</label>
+                                </div>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="submit" class="md-btn md-btn-primary md-btn-large">ثبت درخواست</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Business Hours Section -->
+    <section class="py-5 md-section md-surface-variant">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="fw-bold mb-4 md-text-headline2">ساعات کاری ما</h2>
+                    
+                    <div class="md-card md-elevation-1 p-4">
+                        <div class="row">
+                            {% if business %}
+                                <div class="col-md-8 mx-auto">
+                                    <ul class="list-group list-group-flush">
+                                        {% for hour in business.hours.all %}
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span>{{ hour.get_day_display }}</span>
+                                                {% if hour.is_closed %}
+                                                    <span class="text-danger">تعطیل</span>
+                                                {% else %}
+                                                    <span>{{ hour.opening_time|time:"H:i" }} - {{ hour.closing_time|time:"H:i" }}</span>
+                                                {% endif %}
+                                            </li>
+                                        {% empty %}
+                                            <li class="list-group-item text-center">اطلاعات ساعات کاری موجود نیست</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <div class="col-12">
+                                    <p>اطلاعات ساعات کاری موجود نیست</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold md-text-headline2">سوالات متداول درباره رزرو</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="md-accordion" id="appointmentFaqAccordion">
+                        <!-- Sample FAQs about appointment -->
+                        <div class="md-accordion-item mb-3">
+                            <h2 class="md-accordion-header" id="appointmentHeading1">
+                                <button class="md-accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#appointmentCollapse1" aria-expanded="true" aria-controls="appointmentCollapse1">
+                                    چگونه می‌توانم نوبت خود را لغو کنم؟
+                                </button>
+                            </h2>
+                            <div id="appointmentCollapse1" class="md-accordion-collapse collapse show" aria-labelledby="appointmentHeading1" data-bs-parent="#appointmentFaqAccordion">
+                                <div class="md-accordion-body">
+                                    <p>برای لغو نوبت، می‌توانید با شماره تلفن ما تماس بگیرید یا از طریق ایمیل اقدام کنید. لطفاً حداقل 24 ساعت قبل از زمان نوبت، ما را مطلع سازید.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="md-accordion-item mb-3">
+                            <h2 class="md-accordion-header" id="appointmentHeading2">
+                                <button class="md-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appointmentCollapse2" aria-expanded="false" aria-controls="appointmentCollapse2">
+                                    آیا می‌توانم زمان نوبت خود را تغییر دهم؟
+                                </button>
+                            </h2>
+                            <div id="appointmentCollapse2" class="md-accordion-collapse collapse" aria-labelledby="appointmentHeading2" data-bs-parent="#appointmentFaqAccordion">
+                                <div class="md-accordion-body">
+                                    <p>بله، شما می‌توانید با تماس با ما، زمان نوبت خود را تغییر دهید. لطفاً این کار را حداقل 24 ساعت قبل از زمان نوبت انجام دهید تا بتوانیم برنامه‌ریزی مناسبی داشته باشیم.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="md-accordion-item mb-3">
+                            <h2 class="md-accordion-header" id="appointmentHeading3">
+                                <button class="md-accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appointmentCollapse3" aria-expanded="false" aria-controls="appointmentCollapse3">
+                                    چه مدت قبل باید برای نوبت اقدام کنم؟
+                                </button>
+                            </h2>
+                            <div id="appointmentCollapse3" class="md-accordion-collapse collapse" aria-labelledby="appointmentHeading3" data-bs-parent="#appointmentFaqAccordion">
+                                <div class="md-accordion-body">
+                                    <p>توصیه می‌کنیم حداقل یک هفته قبل برای رزرو نوبت اقدام کنید تا بتوانیم زمان مناسب را برای شما در نظر بگیریم. در زمان‌های شلوغ سال، ممکن است نیاز به رزرو زودتر باشد.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_css %}{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set minimum date to today
+        const dateInput = document.getElementById('id_date');
+        if (dateInput) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedToday = `${yyyy}-${mm}-${dd}`;
+            
+            dateInput.setAttribute('min', formattedToday);
+        }
+    });
+</script>
+{% endblock %}

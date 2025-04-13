@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service.name }} - {{ business.name|default:"کسب و کار محلی" }}{% endblock %}
+
+{% block meta_description %}{{ service.description|truncatewords:25 }}{% endblock %}
+{% block meta_keywords %}{{ service.name }}, {{ service.category.name }}, {{ business.meta_keywords }}{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="bg-light py-5 mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="fw-bold">{{ service.name }}</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">خانه</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'services' %}">خدمات</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ service.name }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Detail Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Service Main Content -->
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    {% if service.image %}
+                        <img src="{{ service.image.url }}" alt="{{ service.name }}" class="img-fluid rounded mb-4 w-100">
+                    {% endif %}
+                    
+                    <div class="bg-white p-4 rounded shadow-sm mb-4">
+                        <h2 class="fw-bold mb-4">{{ service.name }}</h2>
+                        <div class="d-flex flex-wrap align-items-center mb-4">
+                            <span class="badge bg-primary me-2 mb-2">{{ service.category.name }}</span>
+                            {% if service.price %}
+                                <span class="badge bg-success me-2 mb-2">{{ service.price }} تومان</span>
+                            {% endif %}
+                            {% if service.duration %}
+                                <span class="badge bg-info text-dark me-2 mb-2"><i class="far fa-clock me-1"></i> {{ service.duration }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="service-description mb-4">
+                            {{ service.description|linebreaks }}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <a href="{% url 'appointment' %}" class="btn btn-primary"><i class="far fa-calendar-alt me-2"></i> رزرو نوبت</a>
+                            <a href="{% url 'contact' %}" class="btn btn-outline-primary"><i class="far fa-question-circle me-2"></i> سوال دارید؟</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Features -->
+                    <div class="bg-white p-4 rounded shadow-sm">
+                        <h3 class="fw-bold mb-4">ویژگی‌های این خدمت</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="service-icon me-3 text-primary">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">کیفیت بالا</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="service-icon me-3 text-primary">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">قیمت مناسب</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="service-icon me-3 text-primary">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">کارشناسان مجرب</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="service-icon me-3 text-primary">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">گارانتی خدمات</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Book Appointment Widget -->
+                    <div class="bg-white p-4 rounded shadow-sm mb-4">
+                        <h4 class="fw-bold mb-4">رزرو نوبت</h4>
+                        <p>برای رزرو نوبت و استفاده از این خدمت، می‌توانید از طریق فرم آنلاین اقدام کنید.</p>
+                        <a href="{% url 'appointment' %}" class="btn btn-primary w-100">رزرو آنلاین</a>
+                    </div>
+                    
+                    <!-- Contact Widget -->
+                    <div class="bg-white p-4 rounded shadow-sm mb-4">
+                        <h4 class="fw-bold mb-4">تماس با ما</h4>
+                        <ul class="list-unstyled">
+                            {% if business.phone %}
+                                <li class="mb-3"><i class="fas fa-phone me-2 text-primary"></i> {{ business.phone }}</li>
+                            {% endif %}
+                            {% if business.email %}
+                                <li class="mb-3"><i class="fas fa-envelope me-2 text-primary"></i> {{ business.email }}</li>
+                            {% endif %}
+                            {% if business.address %}
+                                <li><i class="fas fa-map-marker-alt me-2 text-primary"></i> {{ business.address }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    <!-- Business Hours Widget -->
+                    <div class="bg-white p-4 rounded shadow-sm mb-4">
+                        <h4 class="fw-bold mb-4">ساعات کاری</h4>
+                        <ul class="list-unstyled">
+                            {% if business.hours.all %}
+                                {% for hour in business.hours.all %}
+                                    <li class="mb-2">{{ hour }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="mb-2">شنبه تا پنجشنبه: ۹:۰۰ تا ۱۸:۰۰</li>
+                                <li>جمعه: تعطیل</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Related Services -->
+            {% if related_services %}
+                <div class="row mt-5 pt-5">
+                    <div class="col-12 text-center mb-5">
+                        <h2 class="fw-bold">خدمات مرتبط</h2>
+                        <p class="lead">خدمات دیگری که ممکن است به آن‌ها علاقه‌مند باشید</p>
+                    </div>
+                    
+                    <div class="row">
+                        {% for related in related_services %}
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="card h-100">
+                                    {% if related.image %}
+                                        <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.name }}">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold">{{ related.name }}</h5>
+                                        <p class="card-text">{{ related.description|truncatewords:10 }}</p>
+                                        {% if related.price %}
+                                            <p class="text-primary fw-bold">{{ related.price }} تومان</p>
+                                        {% endif %}
+                                        <a href="{% url 'service_detail' related.id %}" class="btn btn-outline-primary">جزئیات بیشتر</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bg-primary text-white p-5 rounded">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 mb-4 mb-lg-0">
+                                <h3 class="fw-bold">آماده ارائه خدمات به شما هستیم</h3>
+                                <p class="lead mb-0">برای دریافت مشاوره رایگان و یا رزرو نوبت با ما تماس بگیرید</p>
+                            </div>
+                            <div class="col-lg-4 text-lg-end">
+                                <a href="{% url 'appointment' %}" class="btn btn-light btn-lg">رزرو نوبت</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

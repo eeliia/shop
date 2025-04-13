@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ business.name|default:"کسب و کار محلی" }} - صفحه اصلی{% endblock %}
+
+{% block meta_description %}{{ business.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ business.meta_keywords }}{% endblock %}
+
+{% load static %}
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero md-surface md-elevation-2" style="background-image: url('{% static "img/hero-bg.jpg" %}');">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center hero-content">
+                    <h1 class="display-4 fw-bold mb-4 md-text-headline1">{{ business.name|default:"کسب و کار محلی" }}</h1>
+                    <p class="lead mb-4 md-text-subtitle1">{{ business.slogan|default:"ارائه بهترین خدمات با کیفیت عالی" }}</p>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="{% url 'services' %}" class="md-btn md-btn-primary md-btn-large px-4 gap-3">مشاهده خدمات</a>
+                        <a href="{% url 'appointment' %}" class="md-btn md-btn-outline md-btn-large px-4">رزرو نوبت</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-4 md-text-headline2">درباره ما</h2>
+                    <p class="lead md-text-body1">{{ business.description|truncatewords:50|default:"توضیحات کسب و کار در اینجا قرار می‌گیرد." }}</p>
+                    <a href="{% url 'about' %}" class="md-btn md-btn-primary">بیشتر بدانید</a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="{% static 'img/about.jpg' %}" alt="درباره ما" class="img-fluid rounded md-elevation-2">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-5 md-section md-surface-variant">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold md-text-headline2">خدمات ما</h2>
+                    <p class="lead md-text-body1">بهترین خدمات را با کیفیت عالی از ما بخواهید</p>
+                </div>
+            </div>
+            <div class="row">
+                {% for service in featured_services %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="md-card h-100 md-elevation-1">
+                            {% if service.image %}
+                                <img src="{{ service.image.url }}" class="md-card-media" alt="{{ service.name }}">
+                            {% else %}
+                                <img src="{% static 'img/hero-bg.jpg' %}" class="md-card-media" alt="{{ service.name }}">
+                            {% endif %}
+                            <div class="md-card-content">
+                                <h5 class="md-card-title">{{ service.name }}</h5>
+                                <p class="md-card-text">{{ service.description|truncatewords:20 }}</p>
+                                {% if service.price %}
+                                    <p class="md-text-primary fw-bold">{{ service.price }} تومان</p>
+                                {% endif %}
+                                <a href="{% url 'service_detail' service.id %}" class="md-btn md-btn-outline-primary">جزئیات بیشتر</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>در حال حاضر خدماتی ثبت نشده است.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'services' %}" class="md-btn md-btn-primary">مشاهده همه خدمات</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 md-section md-primary md-text-on-primary">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h2 class="fw-bold md-text-headline2">آماده ارائه خدمات به شما هستیم</h2>
+                    <p class="lead mb-0 md-text-body1">برای دریافت مشاوره رایگان و یا رزرو نوبت با ما تماس بگیرید</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'appointment' %}" class="md-btn md-btn-light md-btn-large">رزرو نوبت</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold md-text-headline2">نظرات مشتریان</h2>
+                    <p class="lead md-text-body1">مشتریان ما درباره خدمات ما چه می‌گویند</p>
+                </div>
+            </div>
+            <div class="row">
+                {% for testimonial in testimonials %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="md-card h-100 md-elevation-1">
+                            <div class="md-card-content text-center">
+                                {% if testimonial.photo %}
+                                    <img src="{{ testimonial.photo.url }}" alt="{{ testimonial.name }}" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                                {% else %}
+                                    <img src="{% static 'img/avatar-placeholder.jpg' %}" alt="Avatar" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                                {% endif %}
+                                <h5 class="md-card-title">{{ testimonial.name }}</h5>
+                                {% if testimonial.position %}
+                                    <p class="md-text-secondary">{{ testimonial.position }}</p>
+                                {% endif %}
+                                <p class="md-card-text">{{ testimonial.content }}</p>
+                                <div class="md-text-warning">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= testimonial.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>در حال حاضر نظری ثبت نشده است.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'testimonials' %}" class="md-btn md-btn-primary">مشاهده همه نظرات</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Preview -->
+    <section class="py-5 md-section md-surface-variant">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold md-text-headline2">گالری تصاویر</h2>
+                    <p class="lead md-text-body1">نمونه کارهای ما را ببینید</p>
+                </div>
+            </div>
+            <div class="row">
+                {% for item in gallery_items %}
+                    <div class="col-lg-3 col-md-4 col-6 gallery-item">
+                        <a href="{% if item.image %}{{ item.image.url }}{% else %}{% static 'img/hero-bg.jpg' %}{% endif %}" data-bs-toggle="modal" data-bs-target="#imageModal">
+                            <img src="{% if item.image %}{{ item.image.url }}{% else %}{% static 'img/hero-bg.jpg' %}{% endif %}" alt="{{ item.title }}" class="img-fluid w-100 md-elevation-1 md-border-radius-medium">
+                        </a>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>در حال حاضر تصویری در گالری وجود ندارد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'gallery' %}" class="md-btn md-btn-primary">مشاهده گالری کامل</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Preview -->
+    <section class="py-5 md-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold md-text-headline2">سوالات متداول</h2>
+                    <p class="lead md-text-body1">پاسخ سوالات رایج شما</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="md-accordion" id="faqAccordion">
+                        {% for faq in faqs %}
+                            <div class="md-accordion-item md-elevation-1 mb-3">
+                                <h2 class="md-accordion-header" id="heading{{ faq.id }}">
+                                    <button class="md-accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ faq.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ faq.id }}">
+                                        {{ faq.question }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ faq.id }}" class="md-accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ faq.id }}" data-bs-parent="#faqAccordion">
+                                    <div class="md-accordion-body">
+                                        {{ faq.answer|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="text-center">در حال حاضر سوالی ثبت نشده است.</p>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="{% url 'faq' %}" class="md-btn md-btn-primary">مشاهده همه سوالات</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content md-surface md-elevation-4">
+                <div class="modal-header">
+                    <button type="button" class="md-btn-icon" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" class="img-fluid" alt="تصویر بزرگ">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <a id="back-to-top" href="#" class="md-btn md-btn-primary md-btn-fab md-btn-fab-large position-fixed bottom-0 end-0 m-3" style="display: none;">
+        <i class="material-icons">arrow_upward</i>
+    </a>
+
+    <!-- JavaScript to handle modal image display -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all gallery item links
+            const galleryLinks = document.querySelectorAll('.gallery-item a');
+            
+            // Add click event listener to each link
+            galleryLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const imgSrc = this.getAttribute('href');
+                    document.getElementById('modalImage').src = imgSrc;
+                    
+                    // Show the modal
+                    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+                    modal.show();
+                });
+            });
+        });
+    </script>
+{% endblock %}

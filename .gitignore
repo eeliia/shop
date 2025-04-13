@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+local_settings.py
+
+# Database
+*.sqlite3
+*.sqlite3-journal
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Media files (uncomment if you want to exclude)
+# media/
+
+# Static files (uncomment if you want to exclude)
+# static/
+
+# Secret keys
+*.env
+.env
+
+# Temporary files
+*.bak
+*.tmp
+*~
+
+# OS specific
+.DS_Store
+Thumbs.db

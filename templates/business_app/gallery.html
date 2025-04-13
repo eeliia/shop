@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}گالری - {{ business.name|default:"کسب و کار محلی" }}{% endblock %}
+
+{% block meta_description %}گالری تصاویر {{ business.name|default:"کسب و کار محلی" }}{% endblock %}
+{% block meta_keywords %}گالری, تصاویر, {{ business.meta_keywords }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-filter .btn {
+        margin: 0 5px 10px;
+    }
+    .gallery-item {
+        margin-bottom: 30px;
+    }
+    .gallery-item img {
+        transition: transform 0.3s ease;
+    }
+    .gallery-item:hover img {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="bg-light py-5 mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="fw-bold">گالری تصاویر</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">خانه</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">گالری</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Content -->
+    <section class="py-5">
+        <div class="container">
+            <!-- Gallery Filters -->
+            {% if categories %}
+            <div class="row mb-5">
+                <div class="col-12 text-center gallery-filter">
+                    <button class="btn btn-outline-primary active" data-filter="*">همه</button>
+                    {% for category in categories %}
+                        {% if category %}
+                            <button class="btn btn-outline-primary" data-filter=".{{ category|slugify }}">{{ category }}</button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Gallery Grid -->
+            <div class="row gallery-grid">
+                {% for item in gallery_items %}
+                    <div class="col-lg-4 col-md-6 gallery-item {% if item.category %}{{ item.category|slugify }}{% endif %}">
+                        <div class="card h-100 shadow-sm">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.title }}</h5>
+                                {% if item.description %}
+                                    <p class="card-text">{{ item.description }}</p>
+                                {% endif %}
+                                {% if item.category %}
+                                    <span class="badge bg-primary">{{ item.category }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>در حال حاضر تصویری در گالری وجود ندارد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Isotope
+        var grid = document.querySelector('.gallery-grid');
+        var iso = new Isotope(grid, {
+            itemSelector: '.gallery-item',
+            layoutMode: 'fitRows'
+        });
+
+        // Filter items on button click
+        var filterButtons = document.querySelectorAll('.gallery-filter button');
+        filterButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var filterValue = this.getAttribute('data-filter');
+                if (filterValue === '*') {
+                    iso.arrange({filter: '*'});
+                } else {
+                    iso.arrange({filter: filterValue});
+                }
+
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %}

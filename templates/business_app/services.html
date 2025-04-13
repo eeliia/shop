@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ business.name|default:"کسب و کار محلی" }} - خدمات{% endblock %}
+
+{% block meta_description %}خدمات {{ business.name|default:"کسب و کار محلی" }} - {{ business.meta_description }}{% endblock %}
+{% block meta_keywords %}خدمات, {{ business.meta_keywords }}{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="bg-light py-5 mb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="fw-bold">خدمات ما</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">خانه</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">خدمات</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Content -->
+    <section class="py-5">
+        <div class="container">
+            <!-- Category Filters -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <a href="#" class="service-filter btn btn-outline-primary m-1 active" data-category="all">همه خدمات</a>
+                        {% for category in categories %}
+                            <a href="#" class="service-filter btn btn-outline-primary m-1" data-category="{{ category.id }}">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Services List -->
+            <div class="row">
+                {% for service in services %}
+                    <div class="col-lg-4 col-md-6 mb-4 service-item" data-category="{{ service.category.id }}">
+                        <div class="card h-100">
+                            {% if service.image %}
+                                <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.name }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">{{ service.name }}</h5>
+                                <p class="card-text">{{ service.description|truncatewords:20 }}</p>
+                                {% if service.price %}
+                                    <p class="text-primary fw-bold">{{ service.price }} تومان</p>
+                                {% endif %}
+                                {% if service.duration %}
+                                    <p><small class="text-muted"><i class="far fa-clock me-1"></i> مدت زمان: {{ service.duration }}</small></p>
+                                {% endif %}
+                                <a href="{% url 'service_detail' service.id %}" class="btn btn-outline-primary">جزئیات بیشتر</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 text-center">
+                        <p>در حال حاضر خدماتی ثبت نشده است.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bg-primary text-white p-5 rounded">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 mb-4 mb-lg-0">
+                                <h3 class="fw-bold">نیاز به مشاوره دارید؟</h3>
+                                <p class="lead mb-0">کارشناسان ما آماده پاسخگویی به سوالات شما هستند</p>
+                            </div>
+                            <div class="col-lg-4 text-lg-end">
+                                <a href="{% url 'contact' %}" class="btn btn-light btn-lg">تماس با ما</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Service filter functionality
+        const serviceFilters = document.querySelectorAll('.service-filter');
+        serviceFilters.forEach(filter => {
+            filter.addEventListener('click', function(e) {
+                e.preventDefault();
+                const category = this.dataset.category;
+                const services = document.querySelectorAll('.service-item');
+                
+                serviceFilters.forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+
+                services.forEach(service => {
+                    if (category === 'all' || service.dataset.category === category) {
+                        service.style.display = 'block';
+                    } else {
+                        service.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

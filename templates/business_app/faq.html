@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}سوالات متداول - {{ business.name|default:"کسب و کار محلی" }}{% endblock %}
+
+{% block meta_description %}{{ business.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ business.meta_keywords }}{% endblock %}
+
+{% load static %}
+{% block content %}
+    <!-- Page Header -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="fw-bold md-text-headline1">سوالات متداول</h1>
+                    <p class="lead md-text-subtitle1">پاسخ به سوالات رایج شما</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-5 md-section">
+        <div class="container">
+            {% if categories %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <button class="md-btn md-btn-outline-primary m-1 active" data-filter="all">همه</button>
+                        {% for category in categories %}
+                            <button class="md-btn md-btn-outline-primary m-1" data-filter="{{ category }}">{{ category }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="md-accordion" id="faqAccordion">
+                        {% for faq in faqs %}
+                            <div class="md-accordion-item mb-3" data-category="{{ faq.category }}">
+                                <h2 class="md-accordion-header" id="heading{{ faq.id }}">
+                                    <button class="md-accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ faq.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ faq.id }}">
+                                        {{ faq.question }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ faq.id }}" class="md-accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ faq.id }}" data-bs-parent="#faqAccordion">
+                                    <div class="md-accordion-body">
+                                        {{ faq.answer|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="text-center py-5">
+                                <p>در حال حاضر سوالی ثبت نشده است.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="py-5 md-section md-primary md-text-on-primary">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-3 mb-lg-0">
+                    <h2 class="fw-bold md-text-headline2">سوال دیگری دارید؟</h2>
+                    <p class="lead mb-0 md-text-body1">با ما تماس بگیرید تا به سوالات شما پاسخ دهیم</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'contact' %}" class="md-btn md-btn-light md-btn-large">تماس با ما</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_css %}{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter functionality for FAQ categories
+        const filterButtons = document.querySelectorAll('[data-filter]');
+        const faqItems = document.querySelectorAll('[data-category]');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filterValue = this.getAttribute('data-filter');
+                
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to current button
+                this.classList.add('active');
+                
+                // Show/hide FAQ items based on category
+                faqItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
