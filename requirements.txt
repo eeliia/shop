@@ -1,0 +1,12 @@
+# Django requirements
+Django>=5.1.7
+
+# Firebase requirements
+firebase-admin>=6.2.0
+gcloud-storage>=2.12.0
+
+# Other requirements
+pillow>=10.0.0  # For image processing
+requests>=2.31.0
+python-dotenv>=1.0.0  # For environment variables
+gunicorn>=21.2.0  # For production deployment

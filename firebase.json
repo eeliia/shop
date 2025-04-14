@@ -1,0 +1,18 @@
+{
+  "hosting": {
+    "public": "staticfiles",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "run": {
+          "serviceId": "local-business-website"
+        }
+      }
+    ]
+  }
+}
